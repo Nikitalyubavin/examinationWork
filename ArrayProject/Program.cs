@@ -12,11 +12,37 @@
 Console.Clear();
 int quantity = UserInput("Введите количество элементов массива: ", "Введено неверное значение!");
 string[] array = ArrayInput("Введите элемент массива: ");
+string[] newArray = ArrayOfThreeSymbols(array);
 
 Console.WriteLine();
 PrintArray(array);
+Console.Write($" -> ");
+PrintArray(newArray);
 
 
+
+
+
+string[] ArrayOfThreeSymbols(string[] arr)
+{
+    string[] newArray = new string[arr.Length];
+    int index = 0;
+    int count = 0;
+    int ind = 0;
+    while (index < arr.Length)
+    {
+        foreach (char i in arr[index]) count++;
+        if (count <= 3)
+        {
+            newArray[ind] = arr[index];
+            ind++;
+        }    
+        count = 0;
+        index++;
+    }
+    Array.Resize(ref newArray, ind);
+    return newArray;
+}
 
 string[] ArrayInput(string message)
 {
@@ -38,19 +64,22 @@ string[] ArrayInput(string message)
             break;
         }
         Console.WriteLine("Для завершения ввода элементов нажмите q, для продолжения - любую другую клавишу");
-        if (Console.ReadKey(true).Key == ConsoleKey.Q) break;
+        if (Console.ReadKey(true).Key == ConsoleKey.Q)
+        {
+            Console.WriteLine("Отлично! Массив заполнен!");
+            break;
+        }
     }
     Array.Resize(ref newArray, quantity);
     return newArray;    
 }
 
-void PrintArray(string[] inArray)
+void PrintArray(string[] arr)
 {
-    for (int i = 0; i < inArray.Length; i++)
-    {
-        Console.Write($"{inArray[i]} \t");
-    }
-    Console.WriteLine();
+    int index = 0;
+    Console.Write("[");
+    for (; index < arr.Length - 1; index++) Console.Write($"'{arr[index]}',   ");
+    if (index == arr.Length - 1) Console.Write($"'{arr[index]}']");
 }
 
 int UserInput(string message, string errorMessage)
